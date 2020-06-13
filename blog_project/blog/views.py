@@ -1,11 +1,13 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.urls import reverse_lazy
+from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView,ListView,DetailView,CreateView,UpdateView
+from django.views.generic import TemplateView,ListView,DetailView,CreateView,UpdateView,DeleteView
 from .models import Comment,Post
-from .forms import PostForm,CommentForm
+from .forms import PostForm,CommentForm,UserForm
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -13,10 +15,8 @@ from django.utils import timezone
 def base(request):
     return render(request,"blog/base.html",{})
 
-
 class AboutView(TemplateView):
     template_name="blog/about.html"
-
 
 class PostListView(ListView):
     model = Post
@@ -43,7 +43,6 @@ class UpdatePostview(LoginRequiredMixin,UpdateView):
 class DeletePostView(LoginRequiredMixin,DeleteView):
     model = Post
     success_url = reverse_lazy("post_list")
-
 
 class DraftPostList(LoginRequiredMixin,ListView):
     login_url = "/login/"
@@ -83,8 +82,6 @@ def add_comment_to_post(request,pk):
 
     return render(request,"blog/comment_form.html",{"comment_form":comment_form})
 
-
-
 @login_required
 def approve_comment(request,pk):
     comment = get_object_or_404(Comment,pk=pk)
@@ -103,3 +100,41 @@ def remove_comment(request,pk):
 ###################################################################
 ## Below code is related to User Login and registration ##
 
+class CreateUserView(CreateView):
+    model = User
+    form_class = UserForm
+    template_name = "registration/registration.html"
+    success_url = reverse_lazy("base_page")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user_form"] = context["form"]
+        return context
+
+    def form_valid(self, form):
+        form.instance.username = form.instance.email
+        form.instance.set_password(form.instance.password)
+        return super().form_valid(form)
+
+
+def login_user(request):
+
+    if request.method == "POST":
+        username = request.POST["username_inp"]
+        password = request.POST["password_inp"]
+
+        user = authenticate(request,username=username,password=password)
+
+        if user is not None:
+            login(request,user)
+            return redirect("base_page")
+        else:
+            return redirect("base_page")
+    
+    else:
+        return render(request,"registration/login.html",{})
+
+@login_required
+def logout_user(request):
+    logout(request)
+    return redirect("base_page")

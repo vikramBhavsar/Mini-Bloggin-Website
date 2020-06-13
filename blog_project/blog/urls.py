@@ -14,15 +14,23 @@ urlpatterns = [
     path("post/<int:pk>/edit/",views.UpdatePostview.as_view(),name="update_post"),
 
     # FBV #
-    path("post/<int:pk>/publish/",views.publish_post(),name="publish_post"),
+    path("post/<int:pk>/publish/",views.publish_post,name="publish_post"),
 
     # Comment Model URL Patterns
     # CBV #
 
     # FBV #
-    path('post/<int:pk>/comment/',views.add_comment_to_post(),name="add_comment_to_post"),
-    path('comment/<int:pk>/approve/',views.approve_comment(),name="approve_comment"),
-    path("comment/<int:pk>/remove",views.remove_comment(),name="remove_comment"),
+    path('post/<int:pk>/comment/',views.add_comment_to_post,name="add_comment_to_post"),
+    path('comment/<int:pk>/approve/',views.approve_comment,name="approve_comment"),
+    path("comment/<int:pk>/remove",views.remove_comment,name="remove_comment"),
+
+    ### User Model URL Patterns ###
+    # CBV #
+    path("register/",views.CreateUserView.as_view(),name="create_user"),
+
+    # FBV #
+    path("login/",views.login_user,name="login_user"),
+    path("logout/",views.logout_user,name="logout_user"),
 
     # Others
     path('about/',views.AboutView.as_view(),name="about_page"),
