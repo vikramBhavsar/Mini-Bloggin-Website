@@ -62,7 +62,7 @@ def publish_post(request,pk):
 
 ###################################################################
 ###################################################################
-## Below code is related to Comments
+## Below code is related to Comments ##
 
 
 @login_required
@@ -97,3 +97,9 @@ def remove_comment(request,pk):
     post_pk = comment.post.pk
     comment.delete()
     return redirect("post_detail",pk=post_pk)
+
+
+###################################################################
+###################################################################
+## Below code is related to User Login and registration ##
+
