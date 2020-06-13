@@ -31,10 +31,26 @@ class PostDetailView(DetailView):
 
 class CreatePostView(LoginRequiredMixin,CreateView):
     login_url = '/login/'
-    template_name = "blog/about.html"
+    template_name = "blog/create_post.html"
 
     form_class = PostForm
     model = Post
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["post_create_form"] = context["form"]
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = User.objects.get(username=self.request.user.username) 
+
+        if "publish_post" in self.request.POST:
+            form.instance.publish()
+            success_url = reverse_lazy("post_list")
+        elif "draft_post" in self.request.POST:
+            success_url = reverse_lazy("draft_list")
+
+        return super().form_valid(form)
 
 class UpdatePostview(LoginRequiredMixin,UpdateView):
     model = Post

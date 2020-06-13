@@ -1,21 +1,26 @@
 {% extends "blog/base.html" %}
 
 {% block body_block %}
-    <br><br>
-    <form action="" method="POST">
-        {% csrf_token %}
-
-        <div class="form-group">
     
-            <label for="username_inp">Username</label>
-            <input type="text" class="form-control" id="username_inp" name="username_inp">
-        </div>
+    <br><br>
 
-        <div class="form-group">
-            <label for="password_inp">Password</label>
-            <input type="password" class="form-control" id="password_inp" name="password_inp">
-        </div>
-        <input type="submit" class="btn btn-outline-primary" value="Login">
-    </form>
+    <div class="jumbotron">
+        <h1 class="display-m4">Login</h1>
+        <form action="" method="POST">
+            {% csrf_token %}
+    
+            <div class="form-group">
+        
+                <label for="username_inp">Username</label>
+                <input type="text" class="form-control" id="username_inp" name="username_inp">
+            </div>
+    
+            <div class="form-group">
+                <label for="password_inp">Password</label>
+                <input type="password" class="form-control" id="password_inp" name="password_inp">
+            </div>
+            <input type="submit" class="btn btn-outline-primary" value="Login">
+        </form>
+    </div>
 
 {% endblock %}

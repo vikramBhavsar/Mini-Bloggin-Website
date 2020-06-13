@@ -1,4 +1,21 @@
 {% extends "blog/base.html" %}
 
 {% block body_block %}
+
+    <br>
+    <div class="jumbotron">
+        <h1>Create new post</h1>
+        <form action="" method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                {{post_create_form.as_p}}
+            </div>
+
+            <input type="submit" class="btn btn-outline-primary" value="Publish Post" name="publish_post">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" class="btn btn-outline-primary" value="Add To Draft" name="draft_post">
+        </form>
+    </div>
 {% endblock %}

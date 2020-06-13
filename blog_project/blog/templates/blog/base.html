@@ -34,6 +34,14 @@
                 {% if user.is_authenticated %}
 
                     <li class="nav-item active">
+                        <a href="{% url "draft_list" %}" class="nav-link">View Drafts</a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a href="{% url "create_post" %}" class="nav-link">New Post</a>
+                    </li>
+    
+                    <li class="nav-item active">
                         <a href="{% url "logout_user" %}" class="nav-link">Logout</a>
                     </li>
                 
