@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView,ListView,DetailView,CreateView,UpdateView
 from .models import Comment,Post
@@ -36,3 +37,16 @@ class CreatePostView(LoginRequiredMixin,CreateView):
 class UpdatePostview(LoginRequiredMixin,UpdateView):
     model = Post
     form_class = PostForm
+
+class DeletePostView(LoginRequiredMixin,DeleteView):
+    model = Post
+    success_url = reverse_lazy("post_list")
+
+
+class DraftPostList(LoginRequiredMixin,ListView):
+    login_url = "/login/"
+
+    model = Post
+
+    def get_queryset(self):
+        return Post.objects.filter(publish_date__isnull=True).order_by("-create_date")
