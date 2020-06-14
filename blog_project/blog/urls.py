@@ -34,5 +34,5 @@ urlpatterns = [
 
     # Others
     path('about/',views.AboutView.as_view(),name="about_page"),
-    path('',views.base,name='base_page'),
+    path('',views.PostListView.as_view(),name='post_list'),
 ]

@@ -1,0 +1,17 @@
+{% extends "blog/base.html" %}
+
+{% block body_block %}
+
+    <br>
+    <div class="jumbotron">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <h4>Add Comment from {{ user.username }}</h4>
+
+            {{ comment_form.as_p}}
+            <hr class="my-4">
+            <input type="submit" class="btn btn-outline-primary" value="Add Comment">
+        </form>
+    </div>
+
+{% endblock %}

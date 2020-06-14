@@ -17,11 +17,14 @@ class PostForm(ModelForm):
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
-        fields = ["author","text"]
+        fields = ["text"]
+
+        labels = {
+            "text":"Comment"
+        }
 
         widgets = {
-            "author": forms.TextInput(attrs={"class":"form-control"}),
-            "title": forms.TextInput(attrs={"class":"form-control"}),
+            "text": forms.TextInput(attrs={"class":"form-control","rows":1}),
         }
 
 class UserForm(ModelForm):

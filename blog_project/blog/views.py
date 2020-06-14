@@ -25,8 +25,6 @@ class PostListView(ListView):
     def get_queryset(self):
         return Post.objects.filter(publish_date__lte=timezone.now()).order_by("-publish_date")
 
-    
-
 class PostDetailView(DetailView):
     model = Post
     template_name = "blog/post_detail.html"
@@ -36,7 +34,6 @@ class PostDetailView(DetailView):
         context["post"] = context["object"]
         return context
     
-
 class CreatePostView(LoginRequiredMixin,CreateView):
     login_url = reverse_lazy("login_user")
     template_name = "blog/create_post.html"
@@ -75,7 +72,6 @@ class UpdatePostview(LoginRequiredMixin,UpdateView):
         context["post_form"] = context["form"]
         return context
     
-
 class DeletePostView(LoginRequiredMixin,DeleteView):
     model = Post
     template_name = "blog/delete_post.html"
@@ -114,6 +110,7 @@ def add_comment_to_post(request,pk):
         if comment_info.is_valid():
             comment_obj = comment_info.save(commit=False)
             comment_obj.post = post
+            comment_obj.author = User.objects.get(username=request.user.username)
             comment_obj.save()
             return redirect("post_detail",pk=post.pk)
     else:
@@ -166,9 +163,9 @@ def login_user(request):
 
         if user is not None:
             login(request,user)
-            return redirect("base_page")
+            return redirect("post_list")
         else:
-            return redirect("base_page")
+            return redirect("login_user")
     
     else:
         return render(request,"registration/login.html",{})
