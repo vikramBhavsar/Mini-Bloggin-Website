@@ -1,4 +1,16 @@
 {% extends "blog/base.html" %}
 
 {% block body_block %}
+
+    <br>
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            {{ post_form.as_p }}
+        </div>
+
+        <input type="submit" class="btn btn-outline-danger" value="Save Edit">
+    </form>
+
 {% endblock %}

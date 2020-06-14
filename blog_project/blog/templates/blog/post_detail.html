@@ -1,4 +1,43 @@
 {% extends "blog/base.html" %}
 
 {% block body_block %}
+
+    <br>
+    <div class="jumbotron">
+        <h1>{{post.title}}</h1>
+        <small>Created on: {{ post.create_date }} </small><br>
+
+        {% if post.publish_date %}
+            <small>Published on: {{ post.publish_date }} </small><br>
+        {% else %}
+            <small>Not Published yet.</small><br>   
+        {% endif %}
+
+        
+
+        <hr class="my-4">
+        <p>{{ post.text}}</p>
+        <small class="mr-auto">Written By: {{ post.author.first_name }} {{ post.author.last_name }}</small>
+
+        <br><br>
+        <a href="{% url "post_list" %}" class="btn btn-outline-primary">View other Posts</a>
+
+        {% if not post.publish_date %}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{% url "publish_post" pk=post.pk %}" class="btn btn-outline-primary" title="Publish Post">Publish Post</a>
+
+        {% endif %}
+
+        {% if user.is_authenticated %}
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{% url "update_post" pk=post.pk %}" class="fa fa-pencil" title="Edit Post"></a>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{% url "delete_post" pk=post.pk %}" class="fa fa-trash" title="Remove Post"></a>
+
+        {% endif %}
+
+    </div>
+
 {% endblock %}

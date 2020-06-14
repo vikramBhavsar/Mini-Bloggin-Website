@@ -31,6 +31,12 @@ class PostDetailView(DetailView):
     model = Post
     template_name = "blog/post_detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["post"] = context["object"]
+        return context
+    
+
 class CreatePostView(LoginRequiredMixin,CreateView):
     login_url = reverse_lazy("login_user")
     template_name = "blog/create_post.html"
@@ -48,15 +54,27 @@ class CreatePostView(LoginRequiredMixin,CreateView):
 
         if "publish_post" in self.request.POST:
             form.instance.publish()
-            success_url = reverse_lazy("post_list")
+            self.success_url = reverse_lazy("post_list")
         elif "draft_post" in self.request.POST:
-            success_url = reverse_lazy("draft_list")
+            self.success_url = reverse_lazy("draft_list")
 
         return super().form_valid(form)
 
 class UpdatePostview(LoginRequiredMixin,UpdateView):
     model = Post
     form_class = PostForm
+
+    template_name = "blog/update_post.html"
+
+    
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["post_form"] = context["form"]
+        return context
+    
 
 class DeletePostView(LoginRequiredMixin,DeleteView):
     model = Post
