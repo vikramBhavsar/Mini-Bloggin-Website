@@ -140,7 +140,7 @@ class CreateUserView(CreateView):
     model = User
     form_class = UserForm
     template_name = "registration/registration.html"
-    success_url = reverse_lazy("base_page")
+    success_url = reverse_lazy("login_user")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -173,4 +173,4 @@ def login_user(request):
 @login_required
 def logout_user(request):
     logout(request)
-    return redirect("base_page")
+    return redirect("post_list")
