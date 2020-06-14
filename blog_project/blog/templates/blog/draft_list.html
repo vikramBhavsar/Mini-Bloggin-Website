@@ -1,4 +1,18 @@
 {% extends "blog/base.html" %}
 
 {% block body_block %}
+
+    <br>
+    {% for item in object_list %}
+        <h1> <a href="/login/">{{item.title}}</a> </h1>
+        <small>Created by: {{ item.author.first_name }} {{ item.author.last_name }}</small><br>
+        <small>Created On: {{item.create_date}}</small>
+
+        
+        <br> <br>
+        <p>{{item.text | truncatewords:4 }}</p>
+        <hr class="my-4">
+    {% endfor %}
+
+
 {% endblock %}
